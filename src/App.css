@@ -41,6 +41,9 @@ li {
 .error {
   color: red;
 }
+.success {
+  color: green;
+}
 
 .Footer a {
   padding-left: 2px;

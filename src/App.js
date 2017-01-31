@@ -3,23 +3,12 @@ import logo from './logo.svg';
 import './App.css';
 import {TodoForm, TodoList, Footer} from './components/todo'
 import {addTodo, generateId, findById, toggleTodo, updateTodo, filterTodos} from './lib/todoHelpers'
+import {loadTodos, createTodo, saveTodo} from './lib/todoService'
 
 class App extends Component {
   state = {
     currentTodo: '',
-    todos: [{
-      id: 1,
-      name: 'do one',
-      isComplete: true
-    }, {
-      id: 2,
-      name: 'do two',
-      isComplete: false
-    }, {
-      id: 3,
-      name: 'do three',
-      isComplete: false
-    }]
+    todos: []
   }
 
   static contextTypes = {
@@ -39,6 +28,7 @@ class App extends Component {
     this.setState({
       todos: updatedTodos
     })
+    saveTodo(toggled).then(() => this.showTempMethod('Todo updated'))
   }
 
   handleSubmit = e => {
@@ -54,6 +44,14 @@ class App extends Component {
       currentTodo: '',
       errorMessage: ''
     })
+    createTodo(newTodo).then(() => this.showTempMethod('Todo added'))
+  }
+
+  showTempMethod = msg => {
+    this.setState({message: msg})
+    setTimeout(() => {
+      this.setState({message: ''})
+    }, 2500)
   }
 
   handleEmptySubmit = e => {
@@ -61,6 +59,11 @@ class App extends Component {
     this.setState({
       errorMessage: 'Please supply a todo name'
     })
+  }
+
+  componentDidMount() {
+    loadTodos()
+      .then(todos => this.setState({todos}))
   }
 
   render() {
@@ -79,6 +82,10 @@ class App extends Component {
           {this.state.errorMessage &&
             <span className="error">{this.state.errorMessage}</span>
           }
+          {this.state.message &&
+            <span className="success">{this.state.message}</span>
+          }
+
           <TodoForm
             handleInputChange={this.handleInputChange}
             currentTodo={this.state.currentTodo}
