@@ -1,4 +1,4 @@
-import {addTodo} from './todoHelpers'
+import {addTodo, findById} from './todoHelpers'
 
 test('addTodo adds new item', () => {
   const startTodos = [
@@ -30,5 +30,15 @@ test('addTodo does not mutate list', () => {
   }
   const result = addTodo(startTodos, newTodo)
   expect(result).not.toBe(startTodos)
+})
+
+test('findById', () => {
+  const startTodos = [
+    {id: 1, name: 'one', isComplete: false},
+    {id: 2, name: 'two', isComplete: false}
+  ]
+  const expected = {id: 2, name: 'two', isComplete: false}
+  const result = findById(2, startTodos)
+  expect(result).toEqual(expected)
 })
 
