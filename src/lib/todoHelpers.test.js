@@ -1,4 +1,4 @@
-const {addTodo, findById, toggleTodo, updateTodo} = require('./todoHelpers')
+const {addTodo, findById, toggleTodo, updateTodo, filterTodos} = require('./todoHelpers')
 const snapshot = require('snap-shot')
 
 test('addTodo adds new item', () => {
@@ -68,4 +68,24 @@ test('updateTodo', () => {
   const result = updateTodo(startTodos, todo)
   expect(result).not.toBe(startTodos)
   snapshot(result)
+})
+
+test('filter completed todos', () => {
+  const todos = [
+    {id: 1, name: 'one', isComplete: false},
+    {id: 2, name: 'two', isComplete: true},
+    {id: 3, name: 'three', isComplete: false}
+  ]
+  const completed = filterTodos(todos, '/complete')
+  snapshot(completed)
+})
+
+test('filter active todos', () => {
+  const todos = [
+    {id: 1, name: 'one', isComplete: false},
+    {id: 2, name: 'two', isComplete: true},
+    {id: 3, name: 'three', isComplete: false}
+  ]
+  const completed = filterTodos(todos, '/active')
+  snapshot(completed)
 })

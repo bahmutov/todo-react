@@ -10,3 +10,11 @@ export const toggleTodo = todo =>
 
 export const updateTodo = (todos, todo) =>
   todos.map(t => t.id === todo.id ? {...t, ...todo} : t)
+
+const filters = {
+  '/active': todo => !todo.isComplete,
+  '/complete': todo => todo.isComplete,
+}
+const I = x => x
+export const filterTodos = (todos, how) =>
+  todos.filter(filters[how] || I)

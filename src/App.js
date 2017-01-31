@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {TodoForm, TodoList, Footer} from './components/todo'
-import {addTodo, generateId, findById, toggleTodo, updateTodo} from './lib/todoHelpers'
+import {addTodo, generateId, findById, toggleTodo, updateTodo, filterTodos} from './lib/todoHelpers'
 
 class App extends Component {
   state = {
@@ -20,6 +20,10 @@ class App extends Component {
       name: 'do three',
       isComplete: false
     }]
+  }
+
+  static contextTypes = {
+    route: React.PropTypes.string
   }
 
   handleInputChange = e => {
@@ -63,6 +67,8 @@ class App extends Component {
     const submitHandler = this.state.currentTodo ?
       this.handleSubmit : this.handleEmptySubmit
 
+    const displayTodos = filterTodos(this.state.todos, this.context.route)
+
     return (
       <div className="App">
         <div className="App-header">
@@ -79,7 +85,7 @@ class App extends Component {
             handleSubmit={submitHandler}
           />
           <TodoList
-            todos={this.state.todos}
+            todos={displayTodos}
             handleToggle={this.handleToggle}
           />
           <Footer />
