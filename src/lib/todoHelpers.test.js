@@ -1,4 +1,5 @@
-import {addTodo, findById} from './todoHelpers'
+const {addTodo, findById, toggleTodo, updateTodo} = require('./todoHelpers')
+const snapshot = require('snap-shot')
 
 test('addTodo adds new item', () => {
   const startTodos = [
@@ -42,3 +43,29 @@ test('findById', () => {
   expect(result).toEqual(expected)
 })
 
+test('findById snapshot', () => {
+  const startTodos = [
+    {id: 1, name: 'one', isComplete: false},
+    {id: 2, name: 'two', isComplete: false}
+  ]
+  const result = findById(2, startTodos)
+  snapshot(result)
+})
+
+test('toggle todo', () => {
+  const todo = {id: 1, name: 'one', isComplete: false}
+  const result = toggleTodo(todo)
+  expect(result).not.toBe(todo)
+  snapshot(result)
+})
+
+test('updateTodo', () => {
+  const startTodos = [
+    {id: 1, name: 'one', isComplete: false},
+    {id: 2, name: 'two', isComplete: false}
+  ]
+  const todo = {id: 2, name: 'two updated', isComplete: true}
+  const result = updateTodo(startTodos, todo)
+  expect(result).not.toBe(startTodos)
+  snapshot(result)
+})
