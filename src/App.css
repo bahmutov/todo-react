@@ -41,3 +41,12 @@ li {
 .error {
   color: red;
 }
+
+.Footer a {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.Footer a.active {
+  font-weight: bold;
+}
